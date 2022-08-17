@@ -1,0 +1,17 @@
+{% for entree in entrees %}
+    <tr>
+        <td>{{ entree.fournisseur }}</td>
+        <td>{{ entree.produit }}</td>
+   
+        <td>{{ entree.entrPrix }}</td>
+        <td>{{ entree.entrQuantite }}</td>
+        <td>
+            <a title="Détails" href="{{ path('entree_show', {'id': entree.id}) }}"><i class="fa fa-eye" style="padding: 5px"></i></a>
+            <a title="Modifier" href="{{ path('entree_edit', {'id': entree.id}) }}"><i class="fa fa-edit" style="padding: 5px"></i></a>
+        </td>
+    </tr>
+{% else %}
+    <tr>
+        <td colspan="5">Aucun enregistrement trouvé</td>
+    </tr>
+{% endfor %}

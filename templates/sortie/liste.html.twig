@@ -1,0 +1,64 @@
+<head>
+	<meta charset="utf-8">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery.min.js') }}"></script>
+	<style type="text/css">
+		body{ background-color: #404C53 }
+        
+        .corps{ background-color: white;width: 65%; height: 725px; position: relative; top:-5px; margin:auto; }
+
+		.d1, .d2 { line-height:3px; display: inline-block; font-size: 14px; }
+
+		.d1{ position: relative; left: 25px; top:-30px; width: 200px; padding: 10px}
+
+		.d2 { position: relative; float: right; left: 30px; top:-10px; width: 250px; padding: 10px }
+	</style>
+</head>
+<body>
+	<div class="corps" id="page">
+		<div style="position:relative; top:30px ">
+			<div class="d1">
+				<div>
+					<img src="{{ asset('assets/image/facture.png') }}" alt="logo" style=" width:120px">
+				</div>
+				<div>
+					<p>ALAIN GSM</p>
+					<p>Tel: 034 01 048 88</p>
+				</div>
+			</div>
+			<H4 style="text-align:center; font-size:20px">Liste des sorties</H4>
+			<table class="table table-bordered" style="width:95%; margin:auto">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Quantité</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for liste in listes %}
+                    <tr>
+                        <td>{{ liste.id }}</td>
+                        <td>{{ liste.sortDate ? liste.sortDate|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ liste.client }}</td>
+                        <td>{{ liste.produit }}</td>
+                        <td>{{ liste.sortPrix }}</td>
+                        <td>{{ liste.sortQuantite }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+		</div>
+	</div>
+
+
+
+
+
+

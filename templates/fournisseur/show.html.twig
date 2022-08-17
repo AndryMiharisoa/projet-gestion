@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de vente | Fournisseur{% endblock %}
+
+{% block body %}
+    <h3>Fournisseur</h3>
+
+    <a href="{{ path('fournisseur_index') }}" class="btn btn-secondary" style="width:115px; height: 35px; color:white; text-decoration: none; font-size:12px;"><i class="fa fa-chevron-left" style="padding: 5px"></i>Retour</a>
+
+    <a href="{{ path('fournisseur_edit', {'id': fournisseur.id}) }}" class="btn btn-primary" style="width:110px; height: 35px; color:white; text-decoration: none; font-size:12px;  position :relative; left:5px "><i class="fa fa-edit" style="padding: 5px"></i>Modifier</a>
+
+    {{ include('fournisseur/_delete_form.html.twig') }}
+
+    <table class="table" style="width:35%;">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fournisseur.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom et prénom(s)</th>
+                <td>{{ fournisseur.frnNom }}</td>
+            </tr>
+            <tr>
+                <th>Contact</th>
+                <td>{{ fournisseur.frnContact }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ fournisseur.frnAdresse }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ fournisseur.frnMail }}</td>
+            </tr>
+            <tr>
+                <th>Observation</th>
+                <td>{{ fournisseur.frnObservation }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ fournisseur.frnType }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'interface.html.twig' %}
+{% block title %}
+{% endblock %}
+
+ {% block body %}
+
+   <div class="bg-dark p-3">
+      <h2 class="text-center" style="color:red;background:#5199a1;margin-top:-10px">liste produit</h2>
+    </div> 
+    <div class="row">
+ 
+       {% for image in images %}
+      <div class="col-4 mt-4">
+          <div class="p-2 clearfix">    
+            <div class="card">
+              <div class="card-header">
+                 <img src="{{ asset('/uploads/' ~ image.imgNom)}}" height="250" width="250" alt="image de {{ image.id }}"  style="transform:rotateY(180deg);">
+              </div>
+      
+              
+                 
+                  <div class="row">     
+                  </div>
+            </div>
+         </div>  
+           </div>
+       {% endfor %}
+</div>
+   {% endblock %}

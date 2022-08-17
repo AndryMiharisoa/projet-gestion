@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de vente | Utilisateur{% endblock %}
+
+{% block body %}
+    <h3>Utilisateur</h3>
+    <a href="{{ path('utilisateur_index') }}" class="btn btn-secondary" style="width:115px; height: 35px; color:white; text-decoration: none; font-size:12px;"><i class="fa fa-chevron-left" style="padding: 5px"></i>Retour</a>
+
+    <a href="{{ path('utilisateur_edit', {'id': utilisateur.id}) }}" class="btn btn-primary" style="width:110px; height: 35px; color:white; text-decoration: none; font-size:12px;  position :relative; left:5px "><i class="fa fa-edit" style="padding: 5px"></i>Modifier</a>
+
+    {{ include('utilisateur/_delete_form.html.twig') }}
+
+    {# <a href="{{ path('utilisateur_badge', {'id': utilisateur.id}) }}" class="btn btn-info" style="width:110px; height: 35px; color:white; text-decoration: none; font-size:12px;  position :relative; top:-71px; left:357px"><i class="fa fa-edit" style="padding: 5px"></i>Badge</a> #}
+
+    <table class="table" style="width:35%;">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ utilisateur.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ utilisateur.email }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ utilisateur.roles ? utilisateur.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Mot de passe</th>
+                <td>{{ utilisateur.password }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ utilisateur.userNom }}</td>
+            </tr>
+            <tr>
+                <th>Identifiant</th>
+                <td>{{ utilisateur.userLogin }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ utilisateur.userStatus ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

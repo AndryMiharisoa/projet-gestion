@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de vente | Typographie{% endblock %}
+
+{% block body %}
+    <h3>Typographie</h3>
+    <a href="{{ path('typographie_index') }}" class="btn btn-secondary" style="width:115px; height: 35px; color:white; text-decoration: none; font-size:12px;"><i class="fa fa-chevron-left" style="padding: 5px"></i>Retour</a>
+
+    <a href="{{ path('typographie_edit', {'id': typographie.id}) }}" class="btn btn-primary" style="width:110px; height: 35px; color:white; text-decoration: none; font-size:12px;  position :relative; left:5px "><i class="fa fa-edit" style="padding: 5px"></i>Modifier</a>
+
+    {{ include('typographie/_delete_form.html.twig') }}
+
+    <table class="table" style="width:35%;">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ typographie.id }}</td>
+            </tr>
+            <tr>
+                <th>Groupe</th>
+                <td>{{ typographie.typoGroupe }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ typographie.typoLibelle }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

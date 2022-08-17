@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de vente | Typologie{% endblock %}
+
+{% block body %}
+    <h3>Typologie</h3>
+    <a class="btn btn-secondary" href="{{ path('typographie_new') }}" style="color:white; text-decoration: none; font-size:12px; width:115px; height: 32px; margin-bottom:10px;"><i class="fa fa-plus" style="padding: 5px"></i>Ajouter</a>
+    <div style="width:90%">
+        <table class="table" id="example">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Groupe</th>
+                    <th>Libellé</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for typographie in typographies %}
+                <tr>
+                    <td>{{ typographie.id }}</td>
+                    <td>{{ typographie.typoGroupe }}</td>
+                    <td>{{ typographie.typoLibelle }}</td>
+                    <td>
+                        <a title="Détails" href="{{ path('typographie_show', {'id': typographie.id}) }}"><i class="fa fa-eye" style="padding: 5px"></i></a>
+                        <a title="Modifier" href="{{ path('typographie_edit', {'id': typographie.id}) }}"><i class="fa fa-edit" style="padding: 5px"></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

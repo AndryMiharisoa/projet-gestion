@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de vente | Sortie index{% endblock %}
+
+{% block body %}
+    <h5 class="text-center">Ajout sortie</h5>
+    <label>Client : </label>
+    <select class="item_client browser-default custom-select" style="width:200px">
+    {% for client in clients %}
+        <option value="{{client.id}}">{{client.cliNom}}</option>
+    {% endfor %}
+    </select>
+    {# <a class="btn btn-secondary" href="{{ path('sortie_new') }}" style="color:white; text-decoration: none; font-size:12px; width:115px; height: 32px; margin-bottom:10px;"><i class="fa fa-plus" style="padding: 5px"></i>Ajouter</a> #}
+    <div style="width:90%">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="crud_table" style="background-color:white">
+                <thead>
+                    <tr>
+                        {#<th>client</th>#}
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>quantite</th>
+                        <th>action</th>
+                    </tr>
+                </thead>
+             
+                <tbody>
+                    <tr>
+                        {#<td contenteditable="true" id="item_client">
+                            <select class="item_client">
+                            {% for client in clients %}
+                                <option value="{{client.id}}">{{client.cliNom}}</option>
+                            {% endfor %}
+                            </select>
+                        </td>
+                        #}
+                        <td contenteditable="true" id="item_produit">
+                            <select class="item_produit browser-default custom-select" style="width:120px;">
+                                {% for produit in produits %}
+                                <option value="{{produit.id}}">{{produit.proNom}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                            <td contenteditable="true" class="item_quantite"></td>
+                            <td contenteditable="true" class="item_prix"></td>
+                            <td ></td>
+                    </tr>
+                </tbody>
+            </table>
+                        <div align="right">
+                            <button type="button" name="add" id="add" class="btn btn-secondary" style="height:25px; font-size:9px">+</button>
+                        </div>
+                        <div align="center">
+                            <button type="button" name="save" id="save" class="btn btn-success"  data-create-new-sortie="{{ path('sortie_new') }}" style="height:35px; font-size:12px">Enregistrer</button>
+                        </div>
+                              <br />
+                            <div id="inserted_item_data"></div>
+                         </div>
+
+            <div style="position:relative; top: 20px">
+                <h5 class="text-center">Liste des sorties</h5>
+                    <table class="table" id="example">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Produit</th>
+                                <th>Prix </th>
+                                <th>Quantite</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% include "sortie/_liste_sortie.html.twig" %}
+                        </tboby>
+                    </table>
+                </div>
+            </div>
+               
+{% endblock %}
+{% block javascripts %}
+       {{parent()}}
+        <script>
+            $(document).ready(function(){
+                $('#example').DataTable({
+                    scrollY: '300px',
+                    scrollCollapse: true,
+                    paging:false,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                    }
+                });
+
+                var count = 1;
+                $('#add').click(function(){
+                    count = count + 1;
+                    var html_code = "<tr id='row"+count+"'>";
+                    //html_code += "<td contenteditable='true' class='item_client'></td>";
+                    html_code += "<td contenteditable='true' class='item_produit'>"+$('#item_produit').html()+"</td>";
+                    html_code += "<td contenteditable='true' class='item_quantite'></td>";
+                    html_code += "<td contenteditable='true' class='item_prix' ></td>";
+                    html_code += "<td><button type='button' name='remove' data-row='row"+count+"' class='btn btn-danger btn-xs remove' style='height:25px; font-size:9px'>-</button></td>";   
+                    html_code += "</tr>";  
+                    $('#crud_table').append(html_code);
+                });
+                
+                $(document).on('click', '.remove', function(){
+                    var delete_row = $(this).data("row");
+                    $('#' + delete_row).remove();
+                });
+                
+                $(document).on('click', '#save', function(){
+                    let urlCreateNewSortie = $(this).attr('data-create-new-sortie');
+                    let allData= [];
+                    $('#crud_table tbody tr').each(function(){
+                        let sortie= {
+                            'client': $('.item_client').val(),
+                            'produit':$(this).find('.item_produit').val(),
+                            'quantite':$(this).find('.item_quantite').text(),
+                            'prix':$(this).find('.item_prix').text(),
+                        };
+                        allData.push(sortie);
+                    });
+                    $('#example').dataTable().fnDestroy(); 
+                    $.ajax({
+                        url: urlCreateNewSortie,
+                        method:"POST",
+                        data:{'dataSortie': allData },
+                        success:function(data){
+                            $('.added-row').remove();
+                            $('.item_prix').text('');
+                            $('.item_quantite').text('');
+                            $('#content-list').html(data.tamplateList);
+                        },
+                        complete: function(){
+                            $('#example').DataTable({
+                                scrollY: '300px',
+                                scrollCollapse: true,
+                                paging:false,
+                                "language": {
+                                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                                }
+                            });
+                            $('#example').DataTable().search($('.item_client option:selected').text()).draw();
+                        }
+
+                    });
+                });
+        
+            
+                $(document).on('click', '.item_client', function(){
+                    $('#example').DataTable().search($('.item_client option:selected').text()).draw();
+                });
+            });
+        </script>
+{% endblock %}

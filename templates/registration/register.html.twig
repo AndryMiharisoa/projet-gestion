@@ -1,0 +1,18 @@
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/accueil.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div style="width:30%; margin:auto;"> 
+        <h1 class="h3 mb-3 font-weight-normal">S'inscrire</h1>   
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Password'
+            }) }}
+
+            <button class="btn btn-lg btn-secondary" type="submit" style="font-size:12px; margin-top:10px; position:relative; left:150px">S'inscrire</button>
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}

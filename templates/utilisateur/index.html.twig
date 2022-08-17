@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de vente | Liste des utiisateurs{% endblock %}
+
+{% block body %}
+    <h3>Liste des utilisateurs</h3>
+    <a class="btn btn-secondary" href="{{ path('utilisateur_new') }}" style="color:white; text-decoration: none; font-size:12px; width:115px; height: 32px; margin-bottom:10px;"><i class="fa fa-plus" style="padding: 5px"></i>Ajouter</a>
+    <div style="width:90%">
+        <table class="table" id="example">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Rôles</th>
+                    <th>Identifiant</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for utilisateur in utilisateurs %}
+                <tr>
+                    <td>{{ utilisateur.id }}</td>
+                    <td>{{ utilisateur.userNom }}</td>
+                    <td>{{ utilisateur.email }}</td>
+                    <td>{{ utilisateur.roles ? utilisateur.roles|json_encode : '' }}</td>
+                    <td>{{ utilisateur.userLogin }}</td>
+                    <td>{{ utilisateur.userStatus ? 'Yes' : 'No' }}</td>
+                    <td>
+                        <a title="Détails" href="{{ path('utilisateur_show', {'id': utilisateur.id}) }}"><i class="fa fa-eye" style="padding: 5px"></i></a>
+                        <a title="Modifier" href="{{ path('utilisateur_edit', {'id': utilisateur.id}) }}"><i class="fa fa-edit" style="padding: 5px"></i></a>
+                        <a title="Badge" href="{{ path('utilisateur_badge', {'id': utilisateur.id}) }}"><i class="fa fa-table" style="padding: 5px"></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block javascripts %}
+       {{parent()}}
+        <script>
+            $(function() {
+                
+                $('#example').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                    }
+                  });
+
+
+                });
+
+    </script>
+{% endblock %}

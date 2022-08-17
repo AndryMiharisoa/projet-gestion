@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {{include('inc/sidebar.html.twig')}}
+        {{include('inc/navbar.html.twig')}}
+        {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+        <link href="{{ asset('plugins/select2-4.0.13/dist/css/select2.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('plugins/bootstrap-datepicker-master/css/datepicker.css') }}" rel="stylesheet">
+        <link href="{{ asset('plugins/jquery/jquery.dataTables.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel ="stylesheet">
+        <link rel="stylesheet" href="{{ asset('assets/css/css/font.css') }}">
+        {% endblock %}
+
+        {% block javascripts %}
+        <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('plugins/jquery.min.js') }}"></script>
+        <script src="{{ asset('plugins/select2-4.0.13/dist/js/select2.min.js') }}"></script>
+        <script src="{{ asset('plugins/bootstrap-datepicker-master/js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('plugins/jquery/jquery.dataTables.min.js') }}"> </script>
+        {% endblock %}
+    </head>
+    <body style="background-color:#DDD9DB; font-size:14px;">
+        <div class="container" style="width: 80%; position: relative; left:110px; top:-40px" >
+            {% block body %}{% endblock %}
+        </div>
+    </body>
+</html>

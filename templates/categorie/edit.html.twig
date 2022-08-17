@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de vente | Modification catégorie{% endblock %}
+
+{% block body %}
+    <h3>Modification catégorie</h3>
+
+    <a href="{{ path('categorie_index') }}"  class="btn btn-secondary" style="color:white; text-decoration: none; font-size:12px; width:115px; height: 35px;"><i class="fa fa-chevron-left" style="padding: 5px"></i>Retour</a>
+
+    {{ include('categorie/_delete_form.html.twig') }}
+
+    {{ form_start(form) }}
+        <button class="btn btn-success" style="position:relative; top:-71px; left:121px; font-size:12px;"><i class="fa fa-edit" style="padding: 5px"></i>{{ button_label|default('Enregistrer') }}</button>
+        <div style="position:relative; top:-55px; width:40%; margin:auto">
+            {{ form_widget(form) }}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de vente | Liste des entrées{% endblock %}
+
+{% block body %}
+    <h4>Ajout entrée</h4>
+    {# <a class="btn btn-secondary" href="{{ path('entree_new') }}" style="color:white; text-decoration: none; font-size:12px; width:115px; height: 32px; margin-bottom:10px;"><i class="fa fa-plus" style="padding: 5px"></i>Ajouter</a> #}
+    <div style="width:90%">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="crud_table" style="background-color:white" data-url-create="{{ path('entree_new') }}">
+                <thead>
+                    <tr>
+                        <th>Fournisseur</th>
+                        <th>Produit</th>
+                        <th>Date</th>
+                        <th>Prix</th>
+                        <th>quantité</th>
+                        <th>quantite</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr>
+                    <td contenteditable="true" class="item_fournisseur"></td>
+                    <td contenteditable="true" class="item_produit"></td>
+                    <td contenteditable="true" class="item_date"></td>
+                    <td contenteditable="true" class="item_prix"></td>
+                     <td contenteditable="true" class="item_quantite"></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            <div align="right">
+                <button type="button" name="add" id="add" class="btn btn-secondary" style="height:25px; font-size:9px">+</button>
+            </div>
+            <div align="center">
+                <button type="button" name="save" id="save" class="btn btn-success" style="height:35px; font-size:12px">Enregistrer</button>
+            </div>
+            <br />
+            <div id="inserted_item_data"></div>
+        </div>
+        <div style="position:relative; top: 20px">
+        <h4>Liste des entrées</h4>
+            <div id="list">
+                {{ include('entree/_list.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    <script>
+
+            $(document).ready(function(){
+                $('#example').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                    }
+                });
+
+                var count = 1;
+                $('#add').click(function(){
+                    count = count + 1;
+                    var html_code = "<tr id='row"+count+"'>";
+                    html_code += "<td contenteditable='true' class='item_fournisseur'></td>";
+                    html_code += "<td contenteditable='true' class='item_produit'></td>";
+                    html_code += "<td contenteditable='true' class='item_date'></td>";
+                    html_code += "<td contenteditable='true' class='item_prix' ></td>";
+                    html_code += "<td contenteditable='true' class='item_quantite' ></td>";
+                    html_code += "<td><button type='button' name='remove' data-row='row"+count+"' class='btn btn-danger remove' style='height:25px; font-size:9px'>-</button></td>";   
+                    html_code += "</tr>";  
+                    $('#crud_table tbody').append(html_code);
+                });
+                
+                $(document).on('click', '.remove', function(){
+                    var delete_row = $(this).data("row");
+                    $('#' + delete_row).remove();
+                });
+
+                $(document).on('click', '#save', function() {
+                    let outData = [];
+                    $('#crud_table tbody tr').each(function(){
+                        let data = {
+                            'fournisseur': $(this).find('.item_fournisseur').text(),
+                            'produit': $(this).find('.item_produit').text(),
+                            'prix': $(this).find('.item_prix').text(),
+                            'date': $(this).find('.item_date').text(),
+                            'quantite': $(this).find('.item_quantite').text()
+                        };
+                        outData.push(data);
+                    });
+                    
+                    console.log(outData);
+
+                    $.ajax({
+                        url: $('#crud_table').attr('data-url-create'),
+                        method:"POST",
+                        data: {'data': outData},
+                        success:function(data){
+                            $('#list').html(html_code);
+                        }
+                    
+                    });
+                });
+            });
+           
+
+    </script>
+{% endblock %}
+

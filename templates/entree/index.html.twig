@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de vente {% endblock %}
+
+{% block body %}
+    <h4 class="text-center">entrée</h4>
+    {# <a class="btn btn-secondary" href="{{ path('entree_new') }}" style="color:white; text-decoration: none; font-size:12px; width:115px; height: 32px; margin-bottom:10px;"><i class="fa fa-plus" style="padding: 5px"></i>Ajouter</a> #}
+    <div style="width:90%">
+        <div class="form-group">
+            <label>Fournisseur</label>
+            <select class="item_fournisseur browser-default custom-select" style="width:200px;">
+                {% for fournisseur in fournisseurs %}
+                    <option value="{{ fournisseur.id }}">{{ fournisseur.frnNom }}</option>
+                {% endfor %}                            
+            </select>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="crud_table" style="background-color:white">
+                <thead>
+                    <tr>
+                        {#<th>fournisseur</th>#}
+                        <th>Produit</th>
+                        <th>Prix unitaire</th>
+                        <th>quantite</th>
+                        <th>action1</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {#<td contenteditable="true" id="item_fournisseur">
+                            <select class="item_fournisseur">
+                                {% for fournisseur in fournisseurs %}
+                                    <option value="{{ fournisseur.id }}">{{ fournisseur.frnNom }}</option>
+                                {% endfor %}                            
+                            </select>
+                        </td>#}
+                        <td contenteditable="true" id="item_produit">
+                            <select class="item_produit browser-default custom-select"  style="width:130px;">
+                                {% for produit in produits %}
+                                    <option value="{{ produit.id }}">{{ produit.proNom }}</option>
+                                {% endfor %}                            
+                            </select>
+                        </td>
+                        <td contenteditable="true" class="item_prix"></td>
+                        <td contenteditable="true" class="item_quantite"></td>
+                        <td ></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div align="right">
+                <button type="button" name="add" id="add" class="btn btn-secondary" style="height:25px; font-size:9px">+</button>
+            </div>
+            <div align="center">
+                <button type="button" name="save" id="save" class="btn btn-success" data-create-new-entree="{{ path('entree_new') }}" onclick="alert('ok')"style="height:35px; font-size:12px">Enregistrer</button>
+            </div>
+            <br />
+            <div id="inserted_item_data"></div>
+        </div>
+        <div style="position:relative; top: 20px">
+        <h5 class="text-center">Liste d'entrée</h5>
+            <table class="table" id="example">
+                <thead>
+                    <tr>
+                        <th>fournisseur</th>
+                        <th>produit</th>
+                        <th>prix unitaire</th>
+                        <th>quantite</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="content-list">
+                    {% include "entree/_list.html.twig" %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+       {{parent()}}
+        <script>
+        $(document).ready(function(){
+            let entreeList = $('#example').DataTable({
+                scrollY: '300px',
+                scrollCollapse: true,
+                paging:false,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+              
+            });
+
+            var count = 1;
+            $('#add').click(function(){
+                count = count + 1;
+                var html_code = "<tr class='added-row' id='row"+count+"'>";
+                //html_code += "<td contenteditable='true'>"+$('#item_fournisseur').html()+"</td>";
+                html_code += "<td contenteditable='true'>"+$('#item_produit').html()+"</td>";
+                html_code += "<td contenteditable='true' class='item_prix'></td>";
+                html_code += "<td contenteditable='true' class='item_quantite'></td>";
+                html_code += "<td><button type='button' name='remove' data-row='row"+count+"' class='btn btn-danger btn-xs remove' style='height:25px; font-size:9px'>-</button></td>";   
+                html_code += "</tr>";  
+                $('#crud_table').append(html_code);
+            });
+
+            
+            
+            $(document).on('change', '.remove', function(){
+                var delete_row = $(this).data("row");
+                $('#' + delete_row).remove();
+            });
+            
+            $(document).on('click','#save',function(){
+                let urlCreateNewEntree = $(this).attr('data-create-new-entree');
+                let allData = [];
+                let bool = false;
+                $('#crud_table tbody tr').each(function(){
+             //       if($(this).find('.item_prix').text().trim() == '' || $(this).find('.item_prix').text().trim() == 'undefined') {
+                    //    $bool = true;
+                      //  $(this).find('.item_prix').addClass('bg-danger');
+                  //  }
+                    
+                   // if($(this).find('.item_quantite').text().trim() == '' || $(this).find('.item_quantite').text().trim() == 'undefined') {
+                    //    $bool = true;
+                    //    $(this).find('.item_quantite').addClass('bg-danger');
+                    //}
+                    let entree = {
+                        'fournisseur': $('.item_fournisseur').val(),
+                        'produit': $(this).find('.item_produit').val(),
+                        'prix': $(this).find('.item_prix').text(),
+                        'quantite': $(this).find('.item_quantite').text()
+                    };
+                    allData.push(entree);
+                });
+              //  if($bool) {
+                  //  alert('Veuillez remplir les champs vide');
+                  //  return false;
+                //} else {
+                $('#example').dataTable().fnDestroy(); 
+                $.ajax({
+                    url: urlCreateNewEntree,
+                    method: "POST",
+                    data: { 'dataEntree': allData },
+                    success:function(data){
+                        $('.added-row').remove();
+                        $('.item_prix').text('');
+                        $('.item_quantite').text('');
+                        $('#content-list').html(data.templateList);
+                    },
+                    complete: function() {
+                        $('#example').DataTable({
+                            scrollY: '300px',
+                            scrollCollapse: true,
+                            paging:false,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                            }
+                        });
+                        $('#example').DataTable().search($('.item_fournisseur option:selected').text()).draw();
+                    }
+                });
+            });
+        
+            
+            $(document).on('click', '.item_fournisseur', function(){
+                $('#example').DataTable().search($('.item_fournisseur option:selected').text()).draw();
+            });
+        });
+
+    </script>
+{% endblock %}

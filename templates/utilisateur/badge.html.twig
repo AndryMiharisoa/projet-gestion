@@ -1,0 +1,47 @@
+<head>
+        <meta charset="UTF-8">
+        {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+        <link href="{{ asset('plugins/select2-4.0.13/dist/css/select2.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('plugins/bootstrap-datepicker-master/css/datepicker.css') }}" rel="stylesheet">
+        <link href="{{ asset('plugins/jquery/jquery.dataTables.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel ="stylesheet">
+        <link rel="stylesheet" href="{{ asset('assets/css/css/font.css') }}">
+        {% endblock %}
+
+        {% block javascripts %}
+        <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('plugins/jquery.min.js') }}"></script>
+        <script src="{{ asset('plugins/select2-4.0.13/dist/js/select2.min.js') }}"></script>
+        <script src="{{ asset('plugins/bootstrap-datepicker-master/js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('plugins/jquery/jquery.dataTables.min.js') }}"> </script>
+        {% endblock %}
+    </head>
+
+{% block body %}
+<body style="background-color:#525659">
+	<div style="background-color:#fff; width: 400px; height: 250px; border-radius: 10px; position:relative; left:10px;">
+		<div style=" background-image: url('img_girl.jpg');">
+			<div class="row" style="position: relative; left:30px; top:20px">
+				<div>
+					<img src="{{ asset('assets/image/profil.jpg') }}" style="border-radius: 50%; width: 120px;">
+				</div>
+				<div style="width:250px;">
+					<img src="{{ asset('assets/image/facture.png') }}" style="width: 100px; position:relative; left:160px; ">
+					<h3 style="position:relative; left:28px;">{{ badge.userType }}</h3>
+				</div>
+			</div>
+			<div style="font-size:12px; position:relative; top: 20px; padding:10px;">
+				<p style="margin-bottom: 3px"><b>ID: </b>{{ badge.id }}</p>
+				<p style="margin-bottom: 3px"><b>Nom: </b>{{ badge.userNom }}</p>
+				<p style="margin-bottom: 3px"><b>Contact: </b>{{ badge.id }}</p>
+				<p><b>Email: </b>{{ badge.email }}</p>
+			</div>
+		</div>
+	</div>
+</body>
+{% endblock %}
+

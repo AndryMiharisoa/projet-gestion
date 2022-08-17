@@ -1,0 +1,18 @@
+                {% for sortie in sorties %}
+                    <tr>
+                        
+                        <td>{{ sortie.client }}</td>
+                        <td>{{ sortie.produit }}</td>
+                        <td>{{ sortie.sortPrix }}</td>
+                        <td>{{ sortie.sortQuantite }}</td>
+                            <td>
+                                <a title="Détails" href="{{ path('sortie_show', {'id': sortie.id}) }}"><i class="fa fa-eye" style="padding: 5px"></i></a>
+                                <a title="Modifier" href="{{ path('sortie_edit', {'id': sortie.id}) }}"><i class="fa fa-edit" style="padding: 5px"></i></a>
+                            </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+               
